@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9A6CB483-5D0B-460F-B12C-5AB3A21748CB</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FacebookMigration</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>01791655DD660230F9ACA4DFB8977F98B01B793B</key>
+		<string>github.com:AdrianAgain/FacebookMigration.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FacebookMigration.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>01791655DD660230F9ACA4DFB8977F98B01B793B</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:AdrianAgain/FacebookMigration.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>01791655DD660230F9ACA4DFB8977F98B01B793B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>01791655DD660230F9ACA4DFB8977F98B01B793B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FacebookMigration</string>
+		</dict>
+	</array>
+</dict>
+</plist>

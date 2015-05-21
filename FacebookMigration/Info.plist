@@ -25,14 +25,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb801789836571928</string>
+				<string>fb262895717163862</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>801789836571928</string>
+	<string>262895717163862</string>
 	<key>FacebookDisplayName</key>
 	<string>Migration Test</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -48,8 +48,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -57,15 +55,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>URL types </key>
-	<array>
-		<dict>
-			<key>URL Schemes</key>
-			<array>
-				<string>fb801789836571928</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>
