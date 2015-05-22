@@ -12,7 +12,7 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
-typedef void (^FacebookManagerComplition)(id result, NSError *error);
+typedef void (^FacebookManagerComplition)(__strong id result, NSError *error);
 typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *error);
 
 @interface PhotoObject : NSObject
@@ -31,23 +31,21 @@ typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *
 
 @interface RLFacebookManager : NSObject
 
-// --- Login ---
+// --- Sessions ---
 
 -(void)configureSessionWithFBSDKLoginButton:(FBSDKLoginButton*)loginButton withPermisions:(NSArray*)permisions withLoginComplition:(FacebookManagerComplition)login withLogoutComplition:(FacebookManagerComplition)logout;
 
 -(void)openSessionWithPermisions:(NSArray*)permissions withLoginComplition:(FacebookManagerComplition)complition;
 
-// --- Logout ---
-
 -(void)closeSession;
-
-// --- Sessions ---
 
 -(BOOL)activeSession;
 
-// --- Facebook ---
+// --- Shares ---
 
 -(void)shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition;
+
+-(void)shareImage:(UIImage*)image withComplition:(FacebookManagerShareComplition)complition;
 
 // --- Shared ---
 

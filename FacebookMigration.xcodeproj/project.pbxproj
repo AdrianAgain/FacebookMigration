@@ -15,7 +15,6 @@
 		3A5A91761B023EEA007A191E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A5A91741B023EEA007A191E /* LaunchScreen.xib */; };
 		3A5A91821B023EEA007A191E /* FacebookMigrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A91811B023EEA007A191E /* FacebookMigrationTests.m */; };
 		3A5A918D1B0244B9007A191E /* RLFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A918C1B0244B9007A191E /* RLFacebookManager.m */; };
-		7EB86269ECCD52A0598F64F3 /* libPods-FacebookMigration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3DEEEFD55C2CAE99999FDD5 /* libPods-FacebookMigration.a */; };
 		CA71DB8A9E5CA68842CC5073 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F51D31FB85BF205D5815AF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +56,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA71DB8A9E5CA68842CC5073 /* libPods.a in Frameworks */,
-				7EB86269ECCD52A0598F64F3 /* libPods-FacebookMigration.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
