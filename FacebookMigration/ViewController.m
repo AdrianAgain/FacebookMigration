@@ -51,14 +51,14 @@
 
 - (IBAction)facebookShareSubmit:(id)sender {
     [[RLFacebookManager shared] shareImage:[UIImage imageNamed:@"share"] withComplition:^(BOOL cancel, id result, NSError *error) {
-         NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
+        NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
     }];
 }
 
 - (IBAction)shareWithLink:(id)sender {
-    //    [[RLFacebookManager shared] shareImage:[PhotoObject photoWithObjectURL:[NSURL URLWithString:@"https://igcdn-photos-d-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-15/914228_203457696505771_277488334_n.jpg"] title:@"FRS" rating:1 image:[UIImage imageNamed:@"share"]] andComplition:^(BOOL cancel, id result, NSError *error) {
-    //        NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
-    //    }];
+    [[RLFacebookManager shared] shareImage:[PhotoObject photoWithObjectURL:[NSURL URLWithString:@"https://igcdn-photos-d-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-15/914228_203457696505771_277488334_n.jpg"] title:@"FRS" rating:1 image:[UIImage imageNamed:@"share"]] andComplition:^(BOOL cancel, id result, NSError *error) {
+        NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
+    }];
 }
 
 
