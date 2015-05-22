@@ -50,8 +50,8 @@
 }
 
 - (IBAction)facebookShareSubmit:(id)sender {
-    [[RLFacebookManager shared] shareImageWithDescription:[UIImage imageNamed:@"hotfix"] withDescription:@"Hot fix man" withController:self andComplition:^(BOOL cancel, id result, NSError *error) {
-        NSLog(@"Shared: Cancel?: %d <%@, %@>", cancel, result, error);
+    [[RLFacebookManager shared] shareImage:[PhotoObject photoWithObjectURL:[NSURL URLWithString:@"https://igcdn-photos-d-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-15/914228_203457696505771_277488334_n.jpg"] title:@"FRS" rating:1 image:[UIImage imageNamed:@"share"]] andComplition:^(BOOL cancel, id result, NSError *error) {
+        NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
     }];
 }
 

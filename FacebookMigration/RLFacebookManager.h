@@ -15,6 +15,20 @@
 typedef void (^FacebookManagerComplition)(id result, NSError *error);
 typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *error);
 
+@interface PhotoObject : NSObject
+
++ (instancetype)photoWithObjectURL:(NSURL *)objectURL
+                             title:(NSString *)title
+                            rating:(NSUInteger)rating
+                             image:(UIImage *)image;
+
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSURL *objectURL;
+@property (nonatomic, assign) NSUInteger rating;
+@property (nonatomic, strong) NSString *title;
+
+@end
+
 @interface RLFacebookManager : NSObject
 
 // --- Login ---
@@ -33,7 +47,7 @@ typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *
 
 // --- Facebook ---
 
--(void)shareImageWithDescription:(UIImage*)imageToPost withDescription:(NSString*)description withController:(UIViewController*)controller andComplition:(FacebookManagerShareComplition)complition;
+-(void)shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition;
 
 // --- Shared ---
 

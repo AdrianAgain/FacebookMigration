@@ -2,18 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "Tile4.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Tile4@2x.png"
+      "filename" : "914228_203457696505771_277488334_n.jpg"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "Tile4@3x.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

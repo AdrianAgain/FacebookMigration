@@ -8,6 +8,23 @@
 
 #import "RLFacebookManager.h"
 
+@implementation PhotoObject
+
++ (instancetype)photoWithObjectURL:(NSURL *)objectURL
+                             title:(NSString *)title
+                            rating:(NSUInteger)rating
+                             image:(UIImage *)image
+{
+    PhotoObject *photo = [[self alloc] init];
+    photo.objectURL = objectURL;
+    photo.title = title;
+    photo.rating = rating;
+    photo.image = image;
+    return photo;
+}
+
+@end
+
 @interface RLFacebookManager() <FBSDKLoginButtonDelegate, FBSDKSharingDelegate>
 {
     
@@ -66,7 +83,7 @@
 
 -(void)openSessionWithPermisions:(NSArray*)permissions withLoginComplition:(FacebookManagerComplition)complition
 {
-    [_loginManager logInWithReadPermissions:permissions handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+    [_loginManager logInWithPublishPermissions:permissions handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
         if (complition) {
             complition(result, error);
         }
@@ -126,50 +143,101 @@
     }
 }
 
--(void)shareImageWithDescription:(UIImage*)imageToPost withDescription:(NSString*)description withController:(UIViewController*)controller andComplition:(FacebookManagerShareComplition)complition
+-(void)shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition
 {
-    if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
-        [self _shareImageWithDescription:imageToPost withDescription:description withController:controller andComplition:complition];
+    if (!photo) {
+        @throw [NSException
+                exceptionWithName:@"shareImage PhotoObject not found"
+                reason:@"Provide a PhotoObject with photo information"
+                userInfo:nil];
+        return;
+    }
+    void (^_share_)(FacebookManagerShareComplition) = ^void(FacebookManagerShareComplition _complition) {
+        if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"publish_actions"]) {
+            [self _shareImage:photo andComplition:_complition];
+        } else {
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+            [loginManager logInWithPublishPermissions:@[@"publish_actions"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                [self _shareImage:photo andComplition:_complition];
+            }];
+        }
+    };
+    if ([self activeSession]) {
+        _share_(complition);
     } else {
-        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        [loginManager logInWithPublishPermissions:@[@"publish_actions"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            [self _shareImageWithDescription:imageToPost withDescription:description withController:controller andComplition:complition];
+        [self openSessionWithPermisions:@[@"publish_actions"] withLoginComplition:^(id result, NSError *error) {
+            if (!error) {
+                _share_(complition);
+            } else {
+                if (complition) {
+                    complition(result, nil, error);
+                }
+            }
         }];
     }
 }
 
--(void)_shareImageWithDescription:(UIImage*)imageToPost withDescription:(NSString*)description withController:(UIViewController*)controller andComplition:(FacebookManagerShareComplition)complition {
+#pragma mark Private
+
+
+- (FBSDKShareLinkContent *)getShareLinkContentWithContentURL:(NSURL *)objectURL
+{
+    FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
+    content.contentURL = objectURL;
+    return content;
+}
+
+- (FBSDKShareDialog *)getShareDialogWithContentURL:(NSURL *)objectURL
+{
+    FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
+    shareDialog.shareContent = [self getShareLinkContentWithContentURL:objectURL];
+    return shareDialog;
+}
+
+- (FBSDKMessageDialog *)getMessageDialogWithContentURL:(NSURL *)objectURL
+{
+    FBSDKMessageDialog *shareDialog = [[FBSDKMessageDialog alloc] init];
+    shareDialog.shareContent = [self getShareLinkContentWithContentURL:objectURL];
+    return shareDialog;
+}
+
+-(void)_shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition
+{
     
-    //TODO: If not support
-    //    2015-05-21 12:41:54.956 FacebookMigration[7085:1261599] Shared: Cancel?: 0 <(null), Error Domain=com.facebook.sdk.share Code=2 "The operation couldn’t be completed. (com.facebook.sdk.share error 2.)" UserInfo=0x7fe562f46e60 {com.facebook.sdk:FBSDKErrorArgumentValueKey=<FBSDKSharePhotoContent: 0x7fe562e9c980>, com.facebook.sdk:FBSDKErrorDeveloperMessageKey=Feed share dialogs support FBSDKShareLinkContent., com.facebook.sdk:FBSDKErrorArgumentNameKey=shareContent}>
-    
-    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
-    photo.image = imageToPost;
-    
-    // User has permisions to publish Content right ®
-    photo.userGenerated = YES;
-    
-    NSDictionary *properties = @{
-                                 @"og:type": @"article",
-                                 // @"og:title": @"A Game of Thrones",
-                                 @"og:description": description //,
-                                 // @"books:isbn": @"0-553-57340-3",
-                                 };
-    FBSDKShareOpenGraphObject *object = [FBSDKShareOpenGraphObject objectWithProperties:properties];
-    
-    // Create an action
-    FBSDKShareOpenGraphAction *action = [[FBSDKShareOpenGraphAction alloc] init];
-    [action setObject:object forKey:@"books:book"];
-    [action setArray:@[photo] forKey:@"image"];
-    
-    // Create the content
-    FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
-    content.action = action;
-    content.previewPropertyName = @"article";
-    
-    // Share
+    //    //TODO: If not support
+    //    //    2015-05-21 12:41:54.956 FacebookMigration[7085:1261599] Shared: Cancel?: 0 <(null), Error Domain=com.facebook.sdk.share Code=2 "The operation couldn’t be completed. (com.facebook.sdk.share error 2.)" UserInfo=0x7fe562f46e60 {com.facebook.sdk:FBSDKErrorArgumentValueKey=<FBSDKSharePhotoContent: 0x7fe562e9c980>, com.facebook.sdk:FBSDKErrorDeveloperMessageKey=Feed share dialogs support FBSDKShareLinkContent., com.facebook.sdk:FBSDKErrorArgumentNameKey=shareContent}>
+    //
+    //    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
+    //    photo.image = imageToPost;
+    //
+    //    // User has permisions to publish Content right ®
+    //    photo.userGenerated = YES;
+    //
+    //    NSDictionary *properties = @{
+    //                                 @"og:type": @"article",
+    //                                 // @"og:title": @"A Game of Thrones",
+    //                                 @"og:description": description //,
+    //                                 // @"books:isbn": @"0-553-57340-3",
+    //                                 };
+    //    FBSDKShareOpenGraphObject *object = [FBSDKShareOpenGraphObject objectWithProperties:properties];
+    //
+    //    // Create an action
+    //    FBSDKShareOpenGraphAction *action = [[FBSDKShareOpenGraphAction alloc] init];
+    //    [action setObject:object forKey:@"article"];
+    //    [action setArray:@[photo] forKey:@"image"];
+    //
+    //    // Create the content
+    //    FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
+    //    content.action = action;
+    //    content.previewPropertyName = @"article";
+    //
+    //    // Share
+    //    _share = complition;
+    //    [FBSDKShareDialog showFromViewController:controller withContent:content delegate:self];
     _share = complition;
-    [FBSDKShareDialog showFromViewController:controller withContent:content delegate:self];
+    FBSDKShareDialog *shareDialog = [self getShareDialogWithContentURL:photo.objectURL];
+    shareDialog.delegate = self;
+    [shareDialog show];
 }
 
 - (void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results
