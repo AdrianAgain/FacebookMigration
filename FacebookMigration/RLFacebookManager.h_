@@ -15,20 +15,6 @@
 typedef void (^FacebookManagerComplition)(__strong id result, NSError *error);
 typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *error);
 
-@interface PhotoObject : NSObject
-
-+ (instancetype)photoWithObjectURL:(NSURL *)objectURL
-                             title:(NSString *)title
-                            rating:(NSUInteger)rating
-                             image:(UIImage *)image;
-
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) NSURL *objectURL;
-@property (nonatomic, assign) NSUInteger rating;
-@property (nonatomic, strong) NSString *title;
-
-@end
-
 @interface RLFacebookManager : NSObject
 
 // --- Sessions ---
@@ -43,9 +29,21 @@ typedef void (^FacebookManagerShareComplition)(BOOL cancel, id result, NSError *
 
 // --- Shares ---
 
--(void)shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition;
+-(void)shareLink:(NSString*)url withComplition:(FacebookManagerShareComplition)complition;
 
 -(void)shareImage:(UIImage*)image withComplition:(FacebookManagerShareComplition)complition;
+
+-(void)shareVideo:(NSURL*)video withComplition:(FacebookManagerShareComplition)complition;
+
+// -- Invites --
+
+-(void)appInvites:(NSString*)url andInviteImageURL:(NSString*)imageInvite witComplition:(FacebookManagerShareComplition)__strong complition;
+
+// -- Profile --
+
+-(void)requestProfileInformation:(FacebookManagerComplition)complition;
+
+-(void)requestFriends:(FacebookManagerComplition)complition;
 
 // --- Shared ---
 

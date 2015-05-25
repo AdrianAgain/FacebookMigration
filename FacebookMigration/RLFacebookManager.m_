@@ -8,24 +8,7 @@
 
 #import "RLFacebookManager.h"
 
-@implementation PhotoObject
-
-+ (instancetype)photoWithObjectURL:(NSURL *)objectURL
-                             title:(NSString *)title
-                            rating:(NSUInteger)rating
-                             image:(UIImage *)image
-{
-    PhotoObject *photo = [[self alloc] init];
-    photo.objectURL = objectURL;
-    photo.title = title;
-    photo.rating = rating;
-    photo.image = image;
-    return photo;
-}
-
-@end
-
-@interface RLFacebookManager() <FBSDKLoginButtonDelegate, FBSDKSharingDelegate>
+@interface RLFacebookManager() <FBSDKLoginButtonDelegate, FBSDKSharingDelegate, FBSDKAppInviteDialogDelegate>
 {
     
 }
@@ -124,21 +107,11 @@
 
 // @@@ SHARES @@@
 
--(void)shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition
+-(void)shareLink:(NSString*)url withComplition:(FacebookManagerShareComplition)complition
 {
-    if (!photo) {
-        @throw [NSException
-                exceptionWithName:@"shareImage PhotoObject not found"
-                reason:@"Provide a PhotoObject with photo information"
-                userInfo:nil];
-        return;
-    }
     [self _shareObject:^{
-        [self _shareImage:photo andComplition:^(BOOL cancel, id result, NSError *error) {
-            if (complition) {
-                complition(cancel, result, error);
-            }
-        }];
+        _share = complition;
+        [self _shareLink:url];
     } witComplition:^(BOOL cancel, id result, NSError *error) {
         if (complition) {
             complition(cancel, result, error);
@@ -151,6 +124,18 @@
     [self _shareObject:^{
         _share = complition;
         [self _shareImage:image];
+    } witComplition:^(BOOL cancel, id result, NSError *error) {
+        if (complition) {
+            complition(cancel, result, error);
+        }
+    }];
+}
+
+-(void)shareVideo:(NSURL*)videoURL withComplition:(FacebookManagerShareComplition)complition
+{
+    [self _shareObject:^{
+        _share = complition;
+        [self _shareVideo:videoURL];
     } witComplition:^(BOOL cancel, id result, NSError *error) {
         if (complition) {
             complition(cancel, result, error);
@@ -187,42 +172,36 @@
 
 // @@@ SHARES PRIVATES @@@
 
-- (FBSDKShareLinkContent *)_getShareLinkContentWithContentURL:(NSURL *)objectURL
-{
-    FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-    content.contentURL = objectURL;
-    return content;
-}
-
-- (FBSDKShareDialog *)_getShareDialogWithContentURL:(NSURL *)objectURL
-{
+- (void)_shareDialog:(id)content {
     FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
-    shareDialog.shareContent = [self _getShareLinkContentWithContentURL:objectURL];
-    return shareDialog;
-}
-
-- (FBSDKMessageDialog *)_getMessageDialogWithContentURL:(NSURL *)objectURL
-{
-    FBSDKMessageDialog *shareDialog = [[FBSDKMessageDialog alloc] init];
-    shareDialog.shareContent = [self _getShareLinkContentWithContentURL:objectURL];
-    return shareDialog;
-}
-
--(void)_shareImage:(PhotoObject*)photo andComplition:(FacebookManagerShareComplition)complition
-{
-    _share = complition;
-    FBSDKShareDialog *shareDialog = [self _getShareDialogWithContentURL:photo.objectURL];
+    shareDialog.shareContent = content;
     shareDialog.delegate = self;
     [shareDialog show];
 }
 
+-(void)_shareLink:(NSString*)url
+{
+    FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
+    content.contentURL = [NSURL URLWithString:url];
+    [self _shareDialog:content];
+}
+
 -(void)_shareImage:(UIImage*)image {
     FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
-    content.photos = @[[FBSDKSharePhoto photoWithImage:image userGenerated:YES]];
+    content.photos = @[[FBSDKSharePhoto photoWithImage:image userGenerated:NO]];
     [FBSDKShareAPI shareWithContent:content delegate:self];
 }
 
--(void)_shareObject:(void(^)(void))shareCallAction witComplition:(FacebookManagerShareComplition)complition
+-(void)_shareVideo:(NSURL*)videoURL
+{
+    FBSDKShareVideo *video = [[FBSDKShareVideo alloc] init];
+    video.videoURL = videoURL;
+    FBSDKShareVideoContent *content = [[FBSDKShareVideoContent alloc] init];
+    content.video = video;
+    [FBSDKShareAPI shareWithContent:content delegate:self];
+}
+
+-(void)_shareObject:(void(^)(void))shareCallAction witComplition:(FacebookManagerShareComplition)__strong complition
 {
     if (!shareCallAction) {
         @throw [NSException exceptionWithName:@"_shareObject <shareCallAction> not found" reason:@"Provide a shareCallAction" userInfo:nil];
@@ -237,7 +216,7 @@
                     shareCallAction();
                 } else {
                     if (complition) {
-                        complition(result, nil, error);
+                        complition(false, result, error);
                     }
                 }
             }];
@@ -251,10 +230,42 @@
                 shareCallAction();
             } else {
                 if (complition) {
-                    complition(result, nil, error);
+                    complition(false, result, error);
                 }
             }
         }];
+    }
+}
+
+// @@@ INVITES @@@
+
+#pragma mark - ********** Invites **********
+
+-(void)appInvites:(NSString*)url andInviteImageURL:(NSString*)imageInvite witComplition:(FacebookManagerShareComplition)__strong complition
+{
+    _share = complition;
+    FBSDKAppInviteContent *content =[[FBSDKAppInviteContent alloc] init];
+    content.appLinkURL = [NSURL URLWithString:url];
+    content.previewImageURL = [NSURL URLWithString:imageInvite];
+    [FBSDKAppInviteDialog showWithContent:content delegate:self];
+}
+
+#pragma mark - Invites Delegates
+
+- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didCompleteWithResults:(NSDictionary *)results
+{
+    if (_share) {
+        if ([results[@"completionGesture"] isEqualToString:@"cancel"]) {
+            _share(true, results, nil);
+        } else {
+            _share(false, results, nil);
+        }
+    }
+}
+
+- (void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didFailWithError:(NSError *)error {
+    if (_share) {
+        _share(false, nil, error);
     }
 }
 
@@ -271,6 +282,51 @@
                  complition(result, error);
              }
          }];
+    }
+}
+
+-(void)requestFriends:(FacebookManagerComplition)complition
+{
+    void (^_requestFriends_)(void) = ^{
+        FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
+                                      initWithGraphPath:@"/me/friends"
+                                      parameters:nil
+                                      HTTPMethod:@"GET"];
+        [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
+                                              id result,
+                                              NSError *error) {
+            if (complition) {
+                complition(result, error);
+            }
+        }];
+    };
+    void (^_askForRequestsFriendsPermisions_)(void) = ^{
+        if ([[FBSDKAccessToken currentAccessToken] hasGranted:@"user_friends"]) {
+            _requestFriends_();
+        } else {
+            [_loginManager logInWithReadPermissions:@[@"user_friends"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                if (!error) {
+                    _requestFriends_();
+                } else {
+                    if (complition) {
+                        complition(result, error);
+                    }
+                }
+            }];
+        }
+    };
+    if ([self activeSession]) {
+        _askForRequestsFriendsPermisions_();
+    } else {
+        [_loginManager logInWithReadPermissions:@[@"user_friends"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (!error) {
+                _requestFriends_();
+            } else {
+                if (complition) {
+                    complition(result, error);
+                }
+            }
+        }];
     }
 }
 

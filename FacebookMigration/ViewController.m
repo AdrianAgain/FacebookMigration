@@ -8,10 +8,11 @@
 
 #import "ViewController.h"
 
-#import "RLFacebookManager.h"
+#import "FacebookAccountManager.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <AssetsLibrary/ALAsset.h>
 
 @interface ViewController ()
 
@@ -56,8 +57,38 @@
 }
 
 - (IBAction)shareWithLink:(id)sender {
-    [[RLFacebookManager shared] shareImage:[PhotoObject photoWithObjectURL:[NSURL URLWithString:@"https://igcdn-photos-d-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-15/914228_203457696505771_277488334_n.jpg"] title:@"FRS" rating:1 image:[UIImage imageNamed:@"share"]] andComplition:^(BOOL cancel, id result, NSError *error) {
+    [[RLFacebookManager shared] shareLink:@"http://www.fittingroomsocial.com" withComplition:^(BOOL cancel, id result, NSError *error) {
         NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
+    }];
+}
+
+- (IBAction)shareVideo:(id)sender {
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *video = [mainBundle pathForResource: @"small" ofType: @"mp4"];
+    // find out alAsset for that url and then do whatever you want with alAsset.
+    __block ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeVideoAtPathToSavedPhotosAlbum:[NSURL URLWithString:video] completionBlock:^(NSURL *assetURL, NSError *error) {
+        [[RLFacebookManager shared] shareVideo:assetURL withComplition:^(BOOL cancel, id result, NSError *error) {
+            NSLog(@"Shared: %@, E: %@, C: %d", result, error, cancel);
+        }];
+    }];
+}
+
+- (IBAction)appInvites:(id)sender {
+    [[RLFacebookManager shared] appInvites:@"http://www.fittingroomsocial.com" andInviteImageURL:@"http://www.fittingroomsocial.com/assets/img/images/logo.png" witComplition:^(BOOL cancel, id result, NSError *error) {
+        NSLog(@"Invites: %@, E: %@, C: %d", result, error, cancel);
+    }];
+}
+
+- (IBAction)retrieveUserInfo:(id)sender {
+    [[RLFacebookManager shared] requestProfileInformation:^(id result, NSError *error) {
+        NSLog(@"R: %@, E: %@", result, error);
+    }];
+}
+
+- (IBAction)getFriends:(id)sender {
+    [[RLFacebookManager shared] requestFriends:^(id result, NSError *error) {
+        NSLog(@"R: %@, E: %@", result, error);
     }];
 }
 

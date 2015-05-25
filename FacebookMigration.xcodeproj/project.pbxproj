@@ -14,7 +14,10 @@
 		3A5A91731B023EEA007A191E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A5A91721B023EEA007A191E /* Images.xcassets */; };
 		3A5A91761B023EEA007A191E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A5A91741B023EEA007A191E /* LaunchScreen.xib */; };
 		3A5A91821B023EEA007A191E /* FacebookMigrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A91811B023EEA007A191E /* FacebookMigrationTests.m */; };
-		3A5A918D1B0244B9007A191E /* RLFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A918C1B0244B9007A191E /* RLFacebookManager.m */; };
+		3A5A918D1B0244B9007A191E /* RLFacebookManager.m_ in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A918C1B0244B9007A191E /* RLFacebookManager.m_ */; };
+		66549A151B137A7800A09985 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66549A141B137A7800A09985 /* AssetsLibrary.framework */; };
+		66549A191B13869500A09985 /* FacebookAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 66549A181B13869500A09985 /* FacebookAccountManager.m */; };
+		665E63651B136EE800EE3F2C /* small.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 665E63641B136ED600EE3F2C /* small.mp4 */; };
 		CA71DB8A9E5CA68842CC5073 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F51D31FB85BF205D5815AF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -43,8 +46,12 @@
 		3A5A917B1B023EEA007A191E /* FacebookMigrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FacebookMigrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5A91801B023EEA007A191E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A5A91811B023EEA007A191E /* FacebookMigrationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FacebookMigrationTests.m; sourceTree = "<group>"; };
-		3A5A918B1B0244B9007A191E /* RLFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLFacebookManager.h; sourceTree = "<group>"; };
-		3A5A918C1B0244B9007A191E /* RLFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLFacebookManager.m; sourceTree = "<group>"; };
+		3A5A918B1B0244B9007A191E /* RLFacebookManager.h_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RLFacebookManager.h_; sourceTree = "<group>"; };
+		3A5A918C1B0244B9007A191E /* RLFacebookManager.m_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RLFacebookManager.m_; sourceTree = "<group>"; };
+		66549A141B137A7800A09985 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		66549A171B13869500A09985 /* FacebookAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookAccountManager.h; sourceTree = "<group>"; };
+		66549A181B13869500A09985 /* FacebookAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookAccountManager.m; sourceTree = "<group>"; };
+		665E63641B136ED600EE3F2C /* small.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = small.mp4; sourceTree = "<group>"; };
 		81BE67AABF3BBA5156045708 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A3DEEEFD55C2CAE99999FDD5 /* libPods-FacebookMigration.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FacebookMigration.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C206DDFED759DB2D526231BF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -55,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66549A151B137A7800A09985 /* AssetsLibrary.framework in Frameworks */,
 				CA71DB8A9E5CA68842CC5073 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,11 +105,13 @@
 				3A5A916C1B023EEA007A191E /* ViewController.h */,
 				3A5A916D1B023EEA007A191E /* ViewController.m */,
 				3A5A916F1B023EEA007A191E /* Main.storyboard */,
+				665E63641B136ED600EE3F2C /* small.mp4 */,
 				3A5A91721B023EEA007A191E /* Images.xcassets */,
 				3A5A91741B023EEA007A191E /* LaunchScreen.xib */,
+				66549A161B13869500A09985 /* Facebook */,
 				3A5A91651B023EEA007A191E /* Supporting Files */,
-				3A5A918B1B0244B9007A191E /* RLFacebookManager.h */,
-				3A5A918C1B0244B9007A191E /* RLFacebookManager.m */,
+				3A5A918B1B0244B9007A191E /* RLFacebookManager.h_ */,
+				3A5A918C1B0244B9007A191E /* RLFacebookManager.m_ */,
 			);
 			path = FacebookMigration;
 			sourceTree = "<group>";
@@ -132,6 +142,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		66549A161B13869500A09985 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				66549A171B13869500A09985 /* FacebookAccountManager.h */,
+				66549A181B13869500A09985 /* FacebookAccountManager.m */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
 		DABDF7A7D8639DB714DEE269 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +163,7 @@
 		F1E3EC0238A14F6AC6C3B292 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				66549A141B137A7800A09985 /* AssetsLibrary.framework */,
 				27F51D31FB85BF205D5815AF /* libPods.a */,
 				A3DEEEFD55C2CAE99999FDD5 /* libPods-FacebookMigration.a */,
 			);
@@ -233,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A5A91711B023EEA007A191E /* Main.storyboard in Resources */,
+				665E63651B136EE800EE3F2C /* small.mp4 in Resources */,
 				3A5A91761B023EEA007A191E /* LaunchScreen.xib in Resources */,
 				3A5A91731B023EEA007A191E /* Images.xcassets in Resources */,
 			);
@@ -286,7 +307,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A5A916E1B023EEA007A191E /* ViewController.m in Sources */,
-				3A5A918D1B0244B9007A191E /* RLFacebookManager.m in Sources */,
+				3A5A918D1B0244B9007A191E /* RLFacebookManager.m_ in Sources */,
+				66549A191B13869500A09985 /* FacebookAccountManager.m in Sources */,
 				3A5A916B1B023EEA007A191E /* AppDelegate.m in Sources */,
 				3A5A91681B023EEA007A191E /* main.m in Sources */,
 			);
